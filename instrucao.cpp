@@ -45,14 +45,32 @@ vector <Instrucao*> creatinst(int qtd){
     }
     return instrucoes;
 }
-void print_ciclo(Instrucao* ins){
-    
+void print_ciclo(vector <Instrucao*> instrucoes,int qtdciclo){
+    vector<string> etapas = {"IF", "ID", "EX", "MEM", "WB"};
+    int aux = 0;
+    for(int i =0; i<qtdciclo; i++){
+        cout << "--------- ciclo "<<i+1<<" -----------\n";
+        for(int j = 0; j<5; j++)
+            cout << etapas[j]<< " -- "<< instrucoes[1]->inst << endl;
+    }
 }
 void simulator(vector <Instrucao*> instrucoes, int qtd){
+    bool dependencia = false;
+    int qtdciclo = 5+(qtd-2);
     cout << "instruções\n";
     for(auto ins : instrucoes)
         cout << ins->inst << "\n";
-    
+    if((instrucoes[0]->opcode == "add" or instrucoes[0]->opcode == "sub") or instrucoes[0]->opcode == "addi"){
+        if(instrucoes[0]->op2 == instrucoes[1]->op1 or instrucoes[0]->op3 == instrucoes[1]->op1){
+            dependencia = true;
+            qtdciclo +=4;
+        }else{
+            qtdciclo += 1;
+        }
+    }else{
+        qtdciclo += 1;
+    }
+    print_ciclo(instrucoes, qtdciclo);
 }
 int main(){
     int qtd;
