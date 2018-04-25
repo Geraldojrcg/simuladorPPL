@@ -13,11 +13,11 @@ int qtd_ciclos(Instrucao *instrucao, int cont) {
 	ciclo = instrucao[cont - 1].ciclo + 4;
 	return ciclo;
 }
-void print_ciclo(int ciclo, string *imprime) {
+void print_ciclo(int ciclo, string *print) {
 	string stage[] = {"IF", "ID", "EX", "MEM", "WB"};
 	cout << "------------------- Ciclo "<< ciclo + 1 <<" ----------------" << endl;
 	for(int j = 0; j < 5; j++){
-		cout << stage[j] << ": 	"  << imprime[j] << endl;
+		cout << stage[j] << ": 	"  << print[j] << endl;
 	}
 }
 void simulador(Instrucao *instrucao, int cont) {
@@ -45,7 +45,7 @@ void simulador(Instrucao *instrucao, int cont) {
 				print_ciclo(i, print);
 				if(j < cont)
 			 		j = next;
-			} else if(instrucao[j].ciclo != i) {
+			}else if(instrucao[j].ciclo != i) {
 				var = shift(print, shift_n);
 				if(var == -1)
 					print[0] = "0";
@@ -54,7 +54,7 @@ void simulador(Instrucao *instrucao, int cont) {
 			for(int k = 0; k < 5; k++)
 				print_ppl[i].null_step[k] = print[k];
 			i++;
-		} else if (instrucao[j].opcode == "j"){
+		}else if (instrucao[j].opcode == "j"){
 			int num = stoi(instrucao[j].r1);
 			next = num - 1;
 			if(instrucao[j].ciclo == i) {
@@ -64,7 +64,7 @@ void simulador(Instrucao *instrucao, int cont) {
 				if(j < cont)
 			 		j = next;
 
-			} else if(instrucao[j].ciclo != i) {
+			}else if(instrucao[j].ciclo != i) {
 				var = shift(print, shift_n);
 				if(var == -1)
 					print[0] = "0";
@@ -73,7 +73,7 @@ void simulador(Instrucao *instrucao, int cont) {
 			for(int k = 0; k < 5; k++)
 				print_ppl[i].null_step[k] = print[k];
 			i++;
-		} else {
+		}else {
 			if(instrucao[j].ciclo == i) {
 				var = shift(print, shift_n);
 				print[0] = instrucao[j].instrucao;

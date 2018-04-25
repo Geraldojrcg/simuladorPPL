@@ -39,6 +39,7 @@ void load_inst(){
 			imput >> instrucao[i].r3;
 		}
 	}
+	//rodando o simulador
 	simulador(instrucao, cont);
 	imput.close();
 	delete[] instrucao;
