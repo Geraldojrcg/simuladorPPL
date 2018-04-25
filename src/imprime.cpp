@@ -1,95 +1,95 @@
 #include "../include/imprime.h"
 #include <iostream>
-int shift(string *v, int n){
+int shift(string *s, int n){
 	if(n == 0) {
 		return -1;
 	}
-	v[n] = v[n-1];
-	return shift(v, n-1);
+	s[n] = s[n-1];
+	return shift(s, n-1);
 }
-int quantidade_ciclos(Instrucao *instrucoes, int cont) {
+int qtd_ciclos(Instrucao *instrucao, int cont) {
 	int ciclo = 0;
-	analiseciclo(instrucoes, cont);
-	ciclo = instrucoes[cont - 1].ciclo + 4;
-
+	getCiclo(instrucao, cont);
+	ciclo = instrucao[cont - 1].ciclo + 4;
 	return ciclo;
 }
-void imprimepipe(int ciclo, string *imprime) {
+void print_ciclo(int ciclo, string *imprime) {
 	string stage[] = {"IF", "ID", "EX", "MEM", "WB"};
-	cout << "------------------- Ciclo "<< ciclo + 1 <<"----------------" << endl;
+	cout << "------------------- Ciclo "<< ciclo + 1 <<" ----------------" << endl;
 	for(int j = 0; j < 5; j++){
 		cout << stage[j] << ": 	"  << imprime[j] << endl;
 	}
-} 
-void processapipe(Instrucao *instrucoes, int cont) {
-	int ciclos = 0, i = 1 , j = 1, var = 0, next = 0;
+}
+void simulador(Instrucao *instrucao, int cont) {
+	int ciclos = 0, i = 1 , j = 1, var = 0, next = 0, shift_n=4;
 	string  print[] = {"0", "0", "0", "0", "0"};
-	ciclos = quantidade_ciclos(instrucoes, cont); /**< Contador de ciclos */
-	Printpipe *imprime = new Printpipe[ciclos + 1];
-	print[0] = instrucoes[0].instrucao ;
+	ciclos = qtd_ciclos(instrucao, cont); /**< Contador de ciclos */
+	
+	Print_pipeline *print_ppl = new Print_pipeline[ciclos + 1];
+	print[0] = instrucao[0].instrucao ;
 
 	for(int k = 0; k < 5; k++)
-		imprime[0].press[k] = print[k];
+		print_ppl[0].null_step[k] = print[k];
 
 	cout << "Quantidade Total de Ciclos: " << ciclos + 1 << endl;
-	imprimepipe(0, print);
+	
+	print_ciclo(0, print);
+
 	while( i <= ciclos ) {
-		if(instrucoes[j].opcode == "beq" || instrucoes[j].opcode == "bne") {
-			int num = stoi(instrucoes[j].r3);
+		if(instrucao[j].opcode == "beq" || instrucao[j].opcode == "bne") {
+			int num = stoi(instrucao[j].r3);
 			next = num - 1;
-			if(instrucoes[j].ciclo == i) {
-				var = shift(print, 4);
-				print[0] = instrucoes[j].instrucao;
-				imprimepipe(i, print);
+			if(instrucao[j].ciclo == i) {
+				var = shift(print, shift_n);
+				print[0] = instrucao[j].instrucao;
+				print_ciclo(i, print);
 				if(j < cont)
 			 		j = next;
-			} else if(instrucoes[j].ciclo != i) {
-				var = shift(print, 4);
+			} else if(instrucao[j].ciclo != i) {
+				var = shift(print, shift_n);
 				if(var == -1)
 					print[0] = "0";
-				imprimepipe(i, print);
+				print_ciclo(i, print);
 			}
 			for(int k = 0; k < 5; k++)
-				imprime[i].press[k] = print[k];
+				print_ppl[i].null_step[k] = print[k];
 			i++;
-		} else if (instrucoes[j].opcode == "j"){
-			int num = stoi(instrucoes[j].r1);
+		} else if (instrucao[j].opcode == "j"){
+			int num = stoi(instrucao[j].r1);
 			next = num - 1;
-			if(instrucoes[j].ciclo == i) {
-				var = shift(print, 4);
-				print[0] = instrucoes[j].instrucao;
-				imprimepipe(i, print);
+			if(instrucao[j].ciclo == i) {
+				var = shift(print, shift_n);
+				print[0] = instrucao[j].instrucao;
+				print_ciclo(i, print);
 				if(j < cont)
 			 		j = next;
 
-			} else if(instrucoes[j].ciclo != i) {
-				var = shift(print, 4);
+			} else if(instrucao[j].ciclo != i) {
+				var = shift(print, shift_n);
 				if(var == -1)
 					print[0] = "0";
-				imprimepipe(i, print);
+				print_ciclo(i, print);
 			}
 			for(int k = 0; k < 5; k++)
-				imprime[i].press[k] = print[k];
+				print_ppl[i].null_step[k] = print[k];
 			i++;
 		} else {
-			
-			if(instrucoes[j].ciclo == i) {
-				var = shift(print, 4);
-				print[0] = instrucoes[j].instrucao;
-				imprimepipe(i, print);
+			if(instrucao[j].ciclo == i) {
+				var = shift(print, shift_n);
+				print[0] = instrucao[j].instrucao;
+				print_ciclo(i, print);
 				if(j < cont)
 			 		j++;
-			} else if(instrucoes[j].ciclo != i) {
-				var = shift(print, 4);
+			} else if(instrucao[j].ciclo != i) {
+				var = shift(print, shift_n);
 				if(var == -1)
 					print[0] = "0";
-				imprimepipe(i, print);
+				print_ciclo(i, print);
 			}
 			for(int k = 0; k < 5; k++)
-				imprime[i].press[k] = print[k];
+				print_ppl[i].null_step[k] = print[k];
 
 			i++;
-
 		}
 	}
 }

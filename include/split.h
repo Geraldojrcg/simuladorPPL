@@ -1,5 +1,5 @@
 #include "instrucao.h"
 
-string splitInstrucao(const string &inst);
-string splitInstrucaoStore(const string &inst);
-void limpainstrucao(Instrucao *instrucoes, int cont);
+string splitInst(const string &inst);
+string splitInstLS(const string &inst);
+void clearinst(Instrucao *instrucoes, int cont);

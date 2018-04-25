@@ -11,7 +11,7 @@ class  Instrucao{
 		int dependencia = -1;
 };
 
-class Printpipe {
+class Print_pipeline {
 	public:
-		string press[5] = {"0", "0", "0", "0", "0"};
+		string null_step[5] = {"0", "0", "0", "0", "0"};
 };

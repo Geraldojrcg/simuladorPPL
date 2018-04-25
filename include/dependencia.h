@@ -1,4 +1,4 @@
 #include "split.h"
 
-void analisedependencia(Instrucao *instrucoes, int cont);
-void analiseciclo(Instrucao *instrucoes, int cont);
+void getDependencia(Instrucao *instrucoes, int cont);
+void getCiclo(Instrucao *instrucoes, int cont);

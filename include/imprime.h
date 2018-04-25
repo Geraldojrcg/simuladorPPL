@@ -2,8 +2,7 @@
 #include <fstream>
 using std::ofstream;
 
-void processapipe(Instrucao *instrucoes, int cont);
-int shift(string *v, int n);
-int quantidade_ciclos(Instrucao *instrucoes, int cont);
-void imprimepipe(int ciclo, string *imprime) ;
-void escrever(int ciclos, Printpipe *imprime);
+void simulador(Instrucao *ins, int cont);
+int shift(string *s, int n);
+int quantidade_ciclos(Instrucao *ins, int cont);
+void imprime_ciclo(int ciclo, string *print) ;

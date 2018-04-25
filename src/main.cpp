@@ -4,43 +4,46 @@
 
 using std::ifstream;
 
-int main() {
-	string linha_instrucao;
+void load_inst(){
+    string lines_imput;
 	int cont = 0;
-	ifstream entrada;
-	entrada.open("imput.txt");
-	if(!entrada) {
-		cout << "Arquivo de instruções inválido!" << endl;
-		return 0;
+	ifstream imput;
+	imput.open("imput.txt");
+	if(!imput) {
+		cout << "Erro ao abrir arquivo de instruções!!" << endl;
+		exit(0);
 	}
-	while(getline(entrada, linha_instrucao)) {
+	while(getline(imput, lines_imput)){
 		cont++;
 	}
-	Instrucao *instrucoes = new Instrucao[cont];
-
-	entrada.clear();
-	entrada.seekg(entrada.beg);
-	for(int i = 0; i < cont; i++) {
-		getline(entrada, instrucoes[i].instrucao);
+	
+	Instrucao *instrucao = new Instrucao[cont];
+	
+	imput.clear();
+	imput.seekg(imput.beg);
+	for(int i = 0; i < cont; i++){
+		getline(imput, instrucao[i].instrucao);
 	}
-	entrada.clear();
-	entrada.seekg(entrada.beg);
+	imput.clear();
+	imput.seekg(imput.beg);
 	for(int i = 0; i < cont; i++) {
-		entrada >> instrucoes[i].opcode;
-		if((instrucoes[i].opcode =="lw") || (instrucoes[i].opcode == "sw")) {
-			entrada >> instrucoes[i].r1;
-			entrada >> instrucoes[i].r2;
-		} else if(instrucoes[i].opcode == "j") {
-		         	entrada >> instrucoes[i].r1;
-	     	} else {
-			entrada >> instrucoes[i].r1;
-			entrada >> instrucoes[i].r2;
-			entrada >> instrucoes[i].r3;
+		imput >> instrucao[i].opcode;
+		if((instrucao[i].opcode =="lw") || (instrucao[i].opcode == "sw")) {
+			imput >> instrucao[i].r1;
+			imput >> instrucao[i].r2;
+		}else if(instrucao[i].opcode == "j") {
+		    imput >> instrucao[i].r1;
+	    }else{
+			imput >> instrucao[i].r1;
+			imput >> instrucao[i].r2;
+			imput >> instrucao[i].r3;
 		}
 	}
-	processapipe(instrucoes, cont);
-	entrada.close();
-	delete[] instrucoes;
-
+	simulador(instrucao, cont);
+	imput.close();
+	delete[] instrucao;
+}
+int main() {
+	load_inst();
 	return 0;
 }
